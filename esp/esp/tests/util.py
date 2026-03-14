@@ -6,7 +6,7 @@ from django.test import TestCase, RequestFactory
 import string
 import random
 
-from esp.middleware.threadlocalrequest import set_current_request
+from esp.middleware.threadlocalrequest import set_current_request, clear_current_request
 
 class CacheFlushTestCase(TestCase):
     """ Flush the cache at the start and end of this test case """
@@ -29,7 +29,7 @@ class CacheFlushTestCase(TestCase):
     def tearDown(self):
         # Clear the thread-local after every test to avoid state leaking
         # between tests run in the same thread.
-        set_current_request(None)
+        clear_current_request()
         super().tearDown()
 
     def _flush_cache(self):
