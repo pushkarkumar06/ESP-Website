@@ -20,6 +20,10 @@ class CacheFlushTestCase(TestCase):
         factory = RequestFactory()
         request = factory.get('/')
         request.user = AnonymousUser()
+        # Add session to the request object to prevent AttributeError when
+        # code paths (e.g., users_morphed()) call get_current_request() and
+        # access request.session
+        request.session = self.client.session
         set_current_request(request)
 
     def tearDown(self):
